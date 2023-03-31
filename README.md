@@ -2,8 +2,7 @@
 
 
 ## 🍀 Community ERD
-
-![efub_communityERD](https://user-images.githubusercontent.com/121334671/229128343-ec8115c5-9d44-45fe-8d10-059414eff81a.png)
+![efub_communityERD](https://user-images.githubusercontent.com/121334671/229131641-24a99947-1898-4113-bd13-196f29650101.png)
 
 
 ## 🍀 Community API 문서 
