@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
     @CreatedDate
-    @Column(updatable = false)
+    @Column(updatable = false)  //UPDATE문에서 해당 칼럼을 제외
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(updatable = false)
+    @Column(insertable = false)  //INSERT문에서 해당 칼럼을 제외
     private LocalDateTime modifiedDate;
 }
