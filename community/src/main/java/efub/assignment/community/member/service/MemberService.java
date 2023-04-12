@@ -20,6 +20,11 @@ public class MemberService {
         if(existsByEmail(requestDto.getEmail())){
             throw new IllegalArgumentException("이미 존재하는 email입니다. email="+requestDto.getEmail());
         }
+
+        if(existsByStudentId(requestDto.getStudentId())){
+            throw new IllegalArgumentException("이미 존재하는 학번입니다. 학번="+requestDto.getStudentId());
+        }
+
         Member member = memberRepository.save(requestDto.toEntity());
         return member.getMemberId();
     }
@@ -28,6 +33,11 @@ public class MemberService {
     public boolean existsByEmail(String email){
         return memberRepository.existsByEmail(email);
     }
+
+
+    //학번 중복 체크 추가
+    @Transactional(readOnly = true)
+    public boolean existsByStudentId(String studentId) { return memberRepository.existsByStudentId(studentId); }
 
     @Transactional(readOnly = true)
     public Member findMemberById(Long id){
