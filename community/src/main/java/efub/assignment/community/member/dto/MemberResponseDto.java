@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberResponseDto {
+
+    // 필드에서 Id 삭제
     private String email;
     private String nickname;
     private String university;
     private String studentId;
 
+    // 생성자에서 Id 삭제
     public MemberResponseDto(String email, String nickname, String university, String studentId){
         this.email = email;
         this.nickname = nickname;
