@@ -1,4 +1,4 @@
-package efub.assignment.community.member.global.entity;
+package efub.assignment.community.global.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

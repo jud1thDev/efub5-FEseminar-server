@@ -1,6 +1,6 @@
 package efub.assignment.community.member.domain;
 
-import efub.assignment.community.member.global.entity.BaseTimeEntity;
+import efub.assignment.community.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
