@@ -5,16 +5,18 @@ import lombok.Getter;
 
 /*
 {
-    "accountId":"1",
     "title" : "나는 퍼비",
-    "content": "오늘 이펍 세션이 있는 날이다. "
+    "content" : "오늘 이펍 세션이 있는 날이다. ",
+    "anonymous" : 1,
+    "writerId" : "1",
+    "boardId" : "5"
 }
  */
 @Getter
 public class PostRequestDto {
-    private Long memberId;
     private String title;
     private String content;
-
-
+    private Boolean anonymous;
+    private Long memberId;
+    private Long boardId;
 }

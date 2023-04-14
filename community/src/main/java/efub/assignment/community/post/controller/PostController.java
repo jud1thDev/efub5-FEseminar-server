@@ -53,8 +53,8 @@ public class PostController {
     // 삭제
     @DeleteMapping("/{postId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public String postRemove(@PathVariable Long postId, @RequestParam Long accountId){
-        postService.removePost(postId, accountId);
+    public String postRemove(@PathVariable Long postId){
+        postService.removePost(postId);
         return "성공적으로 삭제되었습니다.";
     }
 
