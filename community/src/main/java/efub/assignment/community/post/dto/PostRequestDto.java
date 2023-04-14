@@ -17,6 +17,6 @@ public class PostRequestDto {
     private String title;
     private String content;
     private Boolean anonymous;
-    private Long memberId;
+    private Long writerId;
     private Long boardId;
 }

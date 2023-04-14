@@ -25,7 +25,7 @@ public class PostService {
     private final BoardRepository boardRepository;
 
     public Post addPost(PostRequestDto requestDto) {
-        Member writer = memberRepository.findById(requestDto.getMemberId())
+            Member writer = memberRepository.findById(requestDto.getWriterId())
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 계정입니다."));
 
         Board board = boardRepository.findById(requestDto.getBoardId())
