@@ -5,9 +5,15 @@ import efub.assignment.community.board.dto.BoardCreateRequestDto;
 import efub.assignment.community.board.dto.BoardResponseDto;
 import efub.assignment.community.board.dto.BoardUpdateRequestDto;
 import efub.assignment.community.board.service.BoardService;
+import efub.assignment.community.post.domain.Post;
+import efub.assignment.community.post.dto.PostResponseDto;
+import efub.assignment.community.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/boards")
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
+    private final PostService postService;
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -28,6 +35,21 @@ public class BoardController {
     public BoardResponseDto boardFind(@PathVariable Long boardId){
         Board board = boardService.read(boardId);
         return new BoardResponseDto(board);
+    }
+
+    // 게시판에 속한 글들을 모두 조회
+    @GetMapping("/{boardId}/posts")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<PostResponseDto> postsListInBoard(@PathVariable Long boardId){
+
+        List<Post> postList = postService.findPostsInBoard(boardId);
+        List<PostResponseDto> responseDtoList = new ArrayList<>();
+
+        for(Post post : postList){
+            responseDtoList.add(new PostResponseDto(post));
+        }
+        return responseDtoList;
+
     }
 
     @PutMapping("/{boardId}")

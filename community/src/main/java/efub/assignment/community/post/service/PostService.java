@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,6 +52,19 @@ public class PostService {
     public Post findPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findPostsInBoard(Long boardId){
+        List<Post> all = findPostList();
+        List<Post> selected = new ArrayList<>();
+
+        for(Post p:all) {
+            if(p.getBoard().getBoardId().equals(boardId))
+                selected.add(p);
+        }
+
+        return selected;
     }
 
     public void removePost(Long postId) {
