@@ -5,6 +5,7 @@ import efub.assignment.community.board.domain.Board;
 import efub.assignment.community.member.domain.Member;
 import efub.assignment.community.global.entity.BaseTimeEntity;
 import efub.assignment.community.post.dto.PostModifyRequestDto;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Post extends BaseTimeEntity {
     @Id
