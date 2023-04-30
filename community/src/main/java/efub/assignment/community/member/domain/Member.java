@@ -24,7 +24,7 @@ public class Member extends BaseTimeEntity {
     private String email;
 
     @Column(nullable = false)
-    private String encodedPassword;
+    private String password;
 
     @Column(nullable = false, length = 16)  // 닉네임을 변경하는 로직이 있으므로 updatable=false 삭제
     private String nickname;
@@ -41,7 +41,7 @@ public class Member extends BaseTimeEntity {
     @Builder
     public Member(String email, String password, String nickname, String university, String studentId){
         this.email = email;
-        this.encodedPassword = password;
+        this.password = password;
         this.nickname = nickname;
         this.university = university;
         this.studentId = studentId;
