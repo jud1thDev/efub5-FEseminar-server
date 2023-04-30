@@ -27,7 +27,7 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @Column
-    private Boolean anonymous;
+    private Boolean isAnonymous;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -38,11 +38,11 @@ public class Post extends BaseTimeEntity {
     private Board board;
 
     @Builder
-    public Post(Long postId, String title, String content, Boolean anonymous, Member writer, Board board) {
+    public Post(Long postId, String title, String content, Boolean isAnonymous, Member writer, Board board) {
         this.postId = postId;
         this.title = title;
         this.content = content;
-        this.anonymous = anonymous;
+        this.isAnonymous = isAnonymous;
         this.writer = writer;
         this.board = board;
     }

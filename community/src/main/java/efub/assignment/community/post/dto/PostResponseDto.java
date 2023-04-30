@@ -35,7 +35,7 @@ public class PostResponseDto {
         this.postId = post.getPostId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.anonymous = post.getAnonymous();
+        this.anonymous = post.getIsAnonymous();
         this.writerId = post.getWriter().getMemberId();
         this.boardId = post.getBoard().getBoardId();
         this.createdDate = post.getCreatedDate();
