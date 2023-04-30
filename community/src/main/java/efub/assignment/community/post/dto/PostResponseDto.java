@@ -1,5 +1,7 @@
 package efub.assignment.community.post.dto;
 
+import efub.assignment.community.board.dto.BoardResponseDto;
+import efub.assignment.community.member.dto.MemberResponseDto;
 import efub.assignment.community.post.domain.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +28,8 @@ public class PostResponseDto {
     private String title;
     private String content;
     private Boolean anonymous;
-    private Long writerId;
-    private Long boardId;
+    private MemberResponseDto member;
+    private BoardResponseDto board;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -36,8 +38,8 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.anonymous = post.getIsAnonymous();
-        this.writerId = post.getWriter().getMemberId();
-        this.boardId = post.getBoard().getBoardId();
+        this.member = MemberResponseDto.from(post.getWriter());
+        this.board = new BoardResponseDto(post.getBoard());
         this.createdDate = post.getCreatedDate();
         this.modifiedDate = post.getModifiedDate();
     }
