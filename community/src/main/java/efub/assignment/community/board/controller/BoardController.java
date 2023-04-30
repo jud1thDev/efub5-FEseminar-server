@@ -62,6 +62,12 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     @ResponseStatus(value = HttpStatus.OK)
     public String boardRemove(@PathVariable Long boardId){
+        // 게시판에 속한 글들도 모두 삭제
+        List<Post> postList = postService.findPostsInBoard(boardId);
+        for (Post p: postList) {
+            postService.removePost(p.getPostId());
+        }
+
         boardService.delete(boardId);
         return "성공적으로 삭제되었습니다.";
     }
