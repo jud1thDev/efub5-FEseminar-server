@@ -1,7 +1,6 @@
 package efub.assignment.community.post.controller;
 
 import efub.assignment.community.comment.domain.Comment;
-import efub.assignment.community.comment.dto.CommentModifyRequestDto;
 import efub.assignment.community.comment.dto.CommentRequestDto;
 import efub.assignment.community.comment.dto.CommentResponseDto;
 import efub.assignment.community.comment.service.CommentService;
@@ -38,6 +37,4 @@ public class PostCommentController {
         }
         return responseDtoList;
     }
-
-
 }

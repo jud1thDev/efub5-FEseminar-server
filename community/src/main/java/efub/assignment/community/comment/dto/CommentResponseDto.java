@@ -2,7 +2,6 @@ package efub.assignment.community.comment.dto;
 
 import efub.assignment.community.comment.domain.Comment;
 import efub.assignment.community.member.domain.Member;
-import efub.assignment.community.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
