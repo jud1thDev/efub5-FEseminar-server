@@ -53,7 +53,11 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 댓글입니다."));
 
-        comment.modify(requestDto);
+        if(comment.getWriter().getMemberId().equals(requestDto.getWriterId()))
+            comment.modify(requestDto);
+        else
+            throw new IllegalArgumentException("댓글의 작성자가 아닙니다.");
+
         return comment;
     }
 }
