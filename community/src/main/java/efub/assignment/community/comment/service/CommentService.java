@@ -67,4 +67,11 @@ public class CommentService {
 
         return comment;
     }
+
+    public void removeComment(Long commentId){
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 댓글입니다."));
+
+        commentRepository.delete(comment);
+    }
 }

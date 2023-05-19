@@ -28,6 +28,14 @@ public class CommentController {
         return new CommentResponseDto(comment);
     }
 
+    // 삭제
+    @DeleteMapping
+    @ResponseStatus(value = HttpStatus.OK)
+    public String commentRemove(@PathVariable final Long commentId){
+        commentService.removeComment(commentId);
+        return "성공적으로 삭제되었습니다.";
+    }
+
     // 좋아요 생성
     @PostMapping("/hearts")
     @ResponseStatus(value = HttpStatus.CREATED)
