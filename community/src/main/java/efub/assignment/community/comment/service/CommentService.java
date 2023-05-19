@@ -42,6 +42,13 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
+    // 댓글 조회 - ID별
+    public Comment findComment(Long commentId){
+        return commentRepository.findById(commentId)
+                .orElseThrow(()->new EntityNotFoundException("존재하지 않는 댓글입니다. id="+commentId));
+    }
+
+    @Transactional(readOnly = true)
     public List<Comment> findCommentList(Long postId){
         Post post = postRepository.findById(postId)
                 .orElseThrow(()->new EntityNotFoundException("존재하지 않는 글입니다."));
