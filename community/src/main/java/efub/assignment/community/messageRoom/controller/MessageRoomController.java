@@ -58,6 +58,7 @@ public class MessageRoomController {
         return responseDtoList;
     }
 
+    // 쪽지 목록 조회
     @GetMapping("/{messageRoomId}/messages")
     @ResponseStatus(value = HttpStatus.OK)
     public MessageFindResponseDto messageListFind(@PathVariable Long messageRoomId, @RequestParam Long memberId) {
@@ -73,5 +74,12 @@ public class MessageRoomController {
         }
 
         return new MessageFindResponseDto(messageRoom, talkWith, messageResponseDtoList);
+    }
+
+    @DeleteMapping("/{messageRoomId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String roomRemove(@PathVariable Long messageRoomId){
+        messageRoomService.removeRoom(messageRoomId);
+        return "쪽지방이 삭제되었습니다.";
     }
 }

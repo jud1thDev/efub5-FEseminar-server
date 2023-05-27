@@ -73,4 +73,9 @@ public class MessageRoomService {
         else
             return null;
     }
+
+    public void removeRoom(Long messageRoomId){
+        MessageRoom messageRoom = findRoomById(messageRoomId);
+        messageRoomRepository.delete(messageRoom);
+    }
 }
