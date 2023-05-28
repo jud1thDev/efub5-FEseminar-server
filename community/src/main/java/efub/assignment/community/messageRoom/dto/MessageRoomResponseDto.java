@@ -15,9 +15,13 @@ public class MessageRoomResponseDto {
     private String latestContent;
     private LocalDateTime latestDate;
 
-    public MessageRoomResponseDto(MessageRoom messageRoom){
+    public MessageRoomResponseDto(MessageRoom messageRoom) {
         List<Message> messageList = messageRoom.getMessageList();
-        Message latestMsg = messageList.get(messageList.size()-1);
+        Message latestMsg;
+        if (messageList.isEmpty())
+            latestMsg = null;
+        else
+            latestMsg = messageList.get(messageList.size() - 1);
 
         this.messageRoomId = messageRoom.getMessageRoomId();
         this.latestContent = latestMsg.getContent();

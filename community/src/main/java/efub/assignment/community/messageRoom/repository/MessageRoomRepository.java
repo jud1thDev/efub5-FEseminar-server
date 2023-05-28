@@ -11,5 +11,5 @@ public interface MessageRoomRepository  extends JpaRepository<MessageRoom, Long>
 
     MessageRoom findByCreaterAndReceiverAndPost(Member creater, Member receiver, Post post);
 
-    List<MessageRoom> findAllByCreaterOrReceiver(Member finder);
+    List<MessageRoom> findAllByCreaterOrReceiver(Member creater, Member receiver);
 }

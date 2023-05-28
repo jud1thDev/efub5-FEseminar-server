@@ -19,19 +19,16 @@ import java.util.List;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final MessageRoomService messageRoomService;
     private final MemberService memberService;
 
-    public Message addMessage(MessageRequestDto requestDto){
-        MessageRoom messageRoom = messageRoomService.findRoomById(requestDto.getMessageRoomId());
-
-        Member sender = memberService.findMemberById(requestDto.getSenderId());
+    public Message addMessage(MessageRoom messageRoom, Long senderId, String content){
+        Member sender = memberService.findMemberById(senderId);
 
         return messageRepository.save(
                 Message.builder()
                         .messageRoom(messageRoom)
                         .sender(sender)
-                        .content(requestDto.getContent())
+                        .content(content)
                         .build()
         );
     }

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "message_room")
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MessageRoom extends BaseTimeEntity {
@@ -30,7 +30,7 @@ public class MessageRoom extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
-    @JoinColumn(name = "sender_id", updatable = false)
+    @JoinColumn(name = "creater_id", updatable = false)
     private Member creater;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +43,7 @@ public class MessageRoom extends BaseTimeEntity {
     @JoinColumn(name = "post_id", updatable = false)
     private Post post;
 
-    @OneToMany(mappedBy = "message_room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "messageRoom", cascade = CascadeType.ALL)
     private List<Message> messageList = new ArrayList<>();
 
     @Builder
