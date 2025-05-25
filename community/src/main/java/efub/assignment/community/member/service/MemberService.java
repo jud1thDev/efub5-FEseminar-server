@@ -1,57 +1,52 @@
 package efub.assignment.community.member.service;
 
-import efub.assignment.community.member.domain.Member;
-import efub.assignment.community.member.dto.MemberUpdateRequestDto;
-import efub.assignment.community.member.dto.SignUpRequestDto;
-import efub.assignment.community.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
+import efub.assignment.community.global.SecurityUtil;
+import efub.assignment.community.member.domain.User;
+import efub.assignment.community.member.dto.LoginRequestDto;
+import efub.assignment.community.member.dto.LoginResponseDto;
+import efub.assignment.community.member.dto.SignUpRequestDto;
+import efub.assignment.community.member.dto.UserResponseDto;
+import efub.assignment.community.member.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public Long signUp(SignUpRequestDto requestDto){
-        if(memberRepository.existsByEmail(requestDto.getEmail())){
-            throw new IllegalArgumentException("이미 존재하는 email입니다. email="+requestDto.getEmail());
+    public String signUp(SignUpRequestDto requestDto){
+        if(userRepository.existsByUsername(requestDto.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다.");
         }
 
-        if(memberRepository.existsByStudentId(requestDto.getStudentId())){
-            throw new IllegalArgumentException("이미 존재하는 학번입니다. 학번="+requestDto.getStudentId());
+        if(userRepository.existsByNickname(requestDto.getNickname())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임입니다.");
         }
 
-        Member member = memberRepository.save(requestDto.toEntity());
-        return member.getMemberId();
+        userRepository.save(requestDto.toEntity());
+        return "회원가입에 성공하였습니다.";
     }
 
-    /*@Transactional(readOnly = true)
-    public boolean existsByEmail(String email){
-        return memberRepository.existsByEmail(email);
+    public LoginResponseDto login(LoginRequestDto requestDto) {
+        User user = userRepository.findByUsernameAndPassword(
+            requestDto.getUsername(), requestDto.getPassword())
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "로그인에 실패하였습니다."));
+
+        return LoginResponseDto.builder()
+            .username(user.getUsername())
+            .accessToken(jwtTokenProvider.createAccessToken(user))
+            .build();
     }
 
-    //학번 중복 체크 추가
-    @Transactional(readOnly = true)
-    public boolean existsByStudentId(String studentId) { return memberRepository.existsByStudentId(studentId); }*/
-
-    @Transactional(readOnly = true)
-    public Member findMemberById(Long id){
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 id를 가진 Member를 찾을 수 없습니다. id="+id));
-    }
-
-    public Long update(Long memberId, MemberUpdateRequestDto requestDto){
-        Member member = findMemberById(memberId);
-        member.updateMember(requestDto.getNickname());
-        return member.getMemberId();
-    }
-
-    public void withdraw(Long memberId){
-        Member member = findMemberById(memberId);
-        member.withdrawMember();
+    public UserResponseDto jwtTest(User user) {
+        return new UserResponseDto(user);
     }
 }

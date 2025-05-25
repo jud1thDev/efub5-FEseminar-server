@@ -1,18 +1,27 @@
 package efub.assignment.community.comment.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import efub.assignment.community.comment.dto.CommentModifyRequestDto;
 import efub.assignment.community.global.entity.BaseTimeEntity;
-import efub.assignment.community.heart.domain.CommentHeart;
-import efub.assignment.community.member.domain.Member;
+import efub.assignment.community.member.domain.User;
 import efub.assignment.community.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,18 +35,15 @@ public class Comment extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member writer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentHeart> commentHeartList = new ArrayList<>();
-
     @Builder
-    public Comment(String content, Member writer, Post post){
+    public Comment(String content, User writer, Post post){
         this.content = content;
         this.writer = writer;
         this.post = post;

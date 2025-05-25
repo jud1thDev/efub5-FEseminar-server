@@ -1,12 +1,10 @@
 package efub.assignment.community.post.dto;
 
-import efub.assignment.community.board.dto.BoardResponseDto;
-import efub.assignment.community.member.dto.MemberResponseDto;
+import java.time.LocalDateTime;
+
 import efub.assignment.community.post.domain.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /*
 {
@@ -25,21 +23,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PostResponseDto {
     private Long postId;
+    private String nickname;
     private String title;
     private String content;
-    private Boolean anonymous;
-    private MemberResponseDto member;
-    private BoardResponseDto board;
+    private String image;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public PostResponseDto (Post post) {
+    public PostResponseDto(Post post) {
         this.postId = post.getPostId();
+        this.nickname = post.getWriter().getNickname();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.anonymous = post.getIsAnonymous();
-        this.member = new MemberResponseDto(post.getWriter());
-        this.board = new BoardResponseDto(post.getBoard());
+        this.image = post.getImage();
         this.createdDate = post.getCreatedDate();
         this.modifiedDate = post.getModifiedDate();
     }

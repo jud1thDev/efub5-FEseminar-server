@@ -1,16 +1,25 @@
 package efub.assignment.community.post.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import efub.assignment.community.comment.domain.Comment;
 import efub.assignment.community.comment.dto.CommentRequestDto;
 import efub.assignment.community.comment.dto.CommentResponseDto;
 import efub.assignment.community.comment.service.CommentService;
+import efub.assignment.community.global.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,13 +27,6 @@ import java.util.List;
 public class PostCommentController {
 
     private final CommentService commentService;
-
-    @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public CommentResponseDto commentAdd(@PathVariable Long postId, @RequestBody @Valid CommentRequestDto requestDto){
-        Comment comment = commentService.addComment(postId, requestDto);
-        return new CommentResponseDto(comment);
-    }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)

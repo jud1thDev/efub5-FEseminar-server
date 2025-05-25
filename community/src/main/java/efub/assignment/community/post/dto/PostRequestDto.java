@@ -16,7 +16,4 @@ import lombok.Getter;
 public class PostRequestDto {
     private String title;
     private String content;
-    private Boolean anonymous;
-    private Long writerId;
-    private Long boardId;
 }

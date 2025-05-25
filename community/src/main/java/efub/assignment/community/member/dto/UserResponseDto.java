@@ -7,18 +7,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SignUpRequestDto {
+public class UserResponseDto {
 
+    private Long userId;
     private String username;
-    private String password;
     private String nickname;
 
-    public User toEntity(){
-        return User.builder()
-                .username(this.username)
-                .password(this.password)
-                .nickname(this.nickname)
-                .build();
+    public UserResponseDto(User user){
+        this.userId = user.getUserId();
+        this.username = user.getUsername();
+        this.nickname = user.getNickname();
     }
-
 }

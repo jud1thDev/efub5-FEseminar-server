@@ -13,11 +13,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PostModifyRequestDto {
-    private String title;
     private String content;
-
-    public PostModifyRequestDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 }

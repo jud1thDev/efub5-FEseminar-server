@@ -1,14 +1,22 @@
 package efub.assignment.community.heart.domain;
 
-import efub.assignment.community.member.domain.Member;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import efub.assignment.community.member.domain.User;
 import efub.assignment.community.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -27,12 +35,12 @@ public class PostHeart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "작성자는 필수로 입력되어야 합니다.")
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", updatable = false)
+    private User user;
 
     @Builder
-    public PostHeart(Post post, Member member) {
+    public PostHeart(Post post, User user) {
         this.post = post;
-        this.member = member;
+        this.user = user;
     }
 }

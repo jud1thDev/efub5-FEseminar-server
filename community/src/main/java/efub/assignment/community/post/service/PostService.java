@@ -1,19 +1,21 @@
 package efub.assignment.community.post.service;
 
-import efub.assignment.community.board.domain.Board;
-import efub.assignment.community.board.repository.BoardRepository;
-import efub.assignment.community.member.domain.Member;
-import efub.assignment.community.member.repository.MemberRepository;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import efub.assignment.community.global.SecurityUtil;
+import efub.assignment.community.member.domain.User;
 import efub.assignment.community.post.domain.Post;
 import efub.assignment.community.post.dto.PostModifyRequestDto;
 import efub.assignment.community.post.dto.PostRequestDto;
+import efub.assignment.community.post.dto.PostResponseDto;
 import efub.assignment.community.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -22,25 +24,19 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
+    private final S3Service s3Service;
 
-    public Post addPost(PostRequestDto requestDto) {
-        Member writer = memberRepository.findById(requestDto.getWriterId())
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 계정입니다."));
-
-        Board board = boardRepository.findById(requestDto.getBoardId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다."));
-
-        return postRepository.save(
+    public PostResponseDto addPost(MultipartFile image, PostRequestDto requestDto, User user) {
+        String imageUrl = s3Service.imageUpload(image, user);
+        Post post = postRepository.save(
                 Post.builder()
                         .title(requestDto.getTitle())
                         .content(requestDto.getContent())
-                        .isAnonymous(requestDto.getAnonymous())
-                        .writer(writer)
-                        .board(board)
+                        .image(imageUrl)
+                        .writer(user)
                         .build()
         );
+        return new PostResponseDto(post);
     }
 
     @Transactional(readOnly = true)
@@ -51,33 +47,23 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post findPost(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."));
     }
 
-    @Transactional(readOnly = true)
-    public List<Post> findPostsInBoard(Long boardId){
-        List<Post> all = findPostList();
-        List<Post> selected = new ArrayList<>();
-
-        for(Post p:all) {
-            if(p.getBoard().getBoardId().equals(boardId))
-                selected.add(p);
+    public void removePost(User user, Long postId) {
+        Post post = findPost(postId);
+        if(!post.getWriter().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자만 삭제할 수 있습니다.");
         }
-
-        return selected;
-    }
-
-    public void removePost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 게시글입니다."));
-
         postRepository.delete(post);
     }
 
 
-    public Post modifyPost(Long postId, PostModifyRequestDto requestDto) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException("잘못된 접근입니다."));
+    public Post modifyPost(User user, Long postId, PostRequestDto requestDto) {
+        Post post = findPost(postId);
+        if(!post.getWriter().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 작성자만 수정할 수 있습니다.");
+        }
         post.updatePost(requestDto);
         return post;
     }

@@ -1,14 +1,20 @@
 package efub.assignment.community.heart.repository;
 
-import efub.assignment.community.heart.domain.PostHeart;
-import efub.assignment.community.member.domain.Member;
-import efub.assignment.community.post.domain.Post;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
-public interface PostHeartRepository extends JpaRepository<PostHeart, Long> {
-    Boolean existsByMemberAndPost(Member member, Post post);
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Optional<PostHeart> findByMemberAndPost(Member member, Post post);
+import efub.assignment.community.heart.domain.PostHeart;
+import efub.assignment.community.member.domain.User;
+import efub.assignment.community.post.domain.Post;
+
+public interface PostHeartRepository extends JpaRepository<PostHeart, Long> {
+    Boolean existsByUserAndPost(User user, Post post);
+
+    Optional<PostHeart> findByUserAndPost(User user, Post post);
+
+    List<PostHeart> findAllByPost(Post post);
+
+    List<PostHeart> findAllByUser(User user);
 }

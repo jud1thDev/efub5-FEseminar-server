@@ -1,11 +1,11 @@
 package efub.assignment.community.member.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
