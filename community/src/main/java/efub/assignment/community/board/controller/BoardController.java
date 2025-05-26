@@ -8,6 +8,8 @@ import efub.assignment.community.board.service.BoardService;
 import efub.assignment.community.post.domain.Post;
 import efub.assignment.community.post.dto.PostResponseDto;
 import efub.assignment.community.post.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "Board", description = "게시판 관련 API")
 @RestController
 @RequestMapping("/boards")
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class BoardController {
     private final BoardService boardService;
     private final PostService postService;
 
+    @Operation(summary = "게시판 생성")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public BoardResponseDto boardAdd(@RequestBody BoardCreateRequestDto requestDto){
@@ -30,6 +34,7 @@ public class BoardController {
         return new BoardResponseDto(board);
     }
 
+    @Operation(summary = "게시판 단건 조회")
     @GetMapping("/{boardId}")
     @ResponseStatus(value = HttpStatus.OK)
     public BoardResponseDto boardFind(@PathVariable Long boardId){
@@ -37,7 +42,7 @@ public class BoardController {
         return new BoardResponseDto(board);
     }
 
-    // 게시판에 속한 글들을 모두 조회
+    @Operation(summary = "게시판 내 게시글 전체 조회")
     @GetMapping("/{boardId}/posts")
     @ResponseStatus(value = HttpStatus.OK)
     public List<PostResponseDto> postsListInBoard(@PathVariable Long boardId){
@@ -52,6 +57,7 @@ public class BoardController {
 
     }
 
+    @Operation(summary = "게시판 수정")
     @PutMapping("/{boardId}")
     @ResponseStatus(value = HttpStatus.OK)
     public BoardResponseDto boardModifiy(@PathVariable Long boardId, @RequestBody BoardUpdateRequestDto requestDto){
@@ -59,6 +65,7 @@ public class BoardController {
         return new BoardResponseDto(board);
     }
 
+    @Operation(summary = "게시판 삭제")
     @DeleteMapping("/{boardId}")
     @ResponseStatus(value = HttpStatus.OK)
     public String boardRemove(@PathVariable Long boardId){

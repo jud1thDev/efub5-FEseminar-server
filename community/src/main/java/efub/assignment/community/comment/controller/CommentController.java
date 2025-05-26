@@ -6,12 +6,15 @@ import efub.assignment.community.comment.dto.CommentResponseDto;
 import efub.assignment.community.comment.service.CommentService;
 import efub.assignment.community.heart.service.CommentHeartService;
 import efub.assignment.community.member.dto.MemberInfoRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Comment", description = "댓글 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments/{commentId}")
@@ -20,7 +23,7 @@ public class CommentController {
     private final CommentService commentService;
     private final CommentHeartService commentHeartService;
 
-    // 수정
+    @Operation(summary = "댓글 수정")
     @PutMapping
     @ResponseStatus(value = HttpStatus.OK)
     public CommentResponseDto commentModify(@PathVariable Long commentId, @RequestBody @Valid CommentModifyRequestDto requestDto){
@@ -28,7 +31,7 @@ public class CommentController {
         return new CommentResponseDto(comment);
     }
 
-    // 삭제
+    @Operation(summary = "댓글 삭제")
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.OK)
     public String commentRemove(@PathVariable final Long commentId){
@@ -36,7 +39,7 @@ public class CommentController {
         return "성공적으로 삭제되었습니다.";
     }
 
-    // 좋아요 생성
+    @Operation(summary = "댓글 좋아요 생성")
     @PostMapping("/hearts")
     @ResponseStatus(value = HttpStatus.CREATED)
     public String commentHeartCreate(@PathVariable final Long commentId, @RequestBody final MemberInfoRequestDto requestDto){
@@ -44,7 +47,7 @@ public class CommentController {
         return "좋아요를 눌렀습니다.";
     }
 
-    // 좋아요 삭제
+    @Operation(summary = "댓글 좋아요 삭제")
     @DeleteMapping("/hearts")
     @ResponseStatus(value = HttpStatus.OK)
     public String commentHeartDelete(@PathVariable final Long commentId, @RequestParam final Long memberId){

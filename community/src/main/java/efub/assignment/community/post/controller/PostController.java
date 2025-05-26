@@ -7,6 +7,8 @@ import efub.assignment.community.post.dto.PostModifyRequestDto;
 import efub.assignment.community.post.dto.PostRequestDto;
 import efub.assignment.community.post.dto.PostResponseDto;
 import efub.assignment.community.post.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Tag(name = "Post", description = "게시글 관련 API")
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class PostController {
     private final PostService postService;
     private final PostHeartService postHeartService;
 
+    @Operation(summary = "게시글 작성")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public PostResponseDto postAdd(@RequestBody PostRequestDto requestDto){
@@ -31,7 +34,7 @@ public class PostController {
         return new PostResponseDto(post);
     }
 
-    // 전체 조회
+    @Operation(summary = "게시글 전체 목록 조회")
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<PostResponseDto> postListFind(){
@@ -45,7 +48,7 @@ public class PostController {
         return responseDtoList;
     }
 
-    // 개별 조회
+    @Operation(summary = "게시글 단건 조회")
     @GetMapping("/{postId}")
     @ResponseStatus(value = HttpStatus.OK)
     public PostResponseDto postFind(@PathVariable Long postId){
@@ -53,7 +56,7 @@ public class PostController {
         return new PostResponseDto(post);
     }
 
-    // 삭제
+    @Operation(summary = "게시글 삭제")
     @DeleteMapping("/{postId}")
     @ResponseStatus(value = HttpStatus.OK)
     public String postRemove(@PathVariable Long postId){
@@ -61,7 +64,7 @@ public class PostController {
         return "성공적으로 삭제되었습니다.";
     }
 
-    // 수정
+    @Operation(summary = "게시글 수정")
     @PutMapping("/{postId}")
     @ResponseStatus(value = HttpStatus.OK)
     public PostResponseDto postModify(@PathVariable Long postId, @RequestBody PostModifyRequestDto requestDto){
@@ -69,7 +72,7 @@ public class PostController {
         return new PostResponseDto(post);
     }
 
-    // 좋아요 생성
+    @Operation(summary = "게시글 좋아요 생성")
     @PostMapping("/{postId}/hearts")
     @ResponseStatus(value = HttpStatus.CREATED)
     public String postHeartCreate(@PathVariable final Long postId, @RequestBody final HeartRequestDto requestDto){
@@ -77,7 +80,7 @@ public class PostController {
         return "좋아요를 눌렀습니다.";
     }
 
-    // 좋아요 삭제
+    @Operation(summary = "게시글 좋아요 삭제")
     @DeleteMapping("/{postId}/hearts")
     @ResponseStatus(value = HttpStatus.OK)
     public String postHeartDelete(@PathVariable final Long postId, @RequestParam final Long memberId){
