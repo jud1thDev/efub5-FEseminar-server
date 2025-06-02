@@ -1,0 +1,17 @@
+spring:
+  application:
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${RDS_IP}:3306/efubcommunity?createDatabaseIfNotExist=true&characterEncoding=UTF-8&characterSetResults=UTF-8
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
